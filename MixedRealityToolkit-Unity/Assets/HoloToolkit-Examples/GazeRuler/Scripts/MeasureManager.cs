@@ -29,15 +29,16 @@ namespace HoloToolkit.Examples.GazeRuler
             InputManager.Instance.PushFallbackInputHandler(gameObject);
 
             // inti measure mode
-            switch (Mode)
-            {
-                case GeometryMode.Polygon:
+            //switch (Mode)
+            //{
+            //    case GeometryMode.Polygon:
+                    Mode = GeometryMode.Rectangle;
                     manager = PolygonManager.Instance;
-                    break;
-                default:
-                    manager = LineManager.Instance;
-                    break;
-            }
+            //        break;
+            //    default:
+            //        manager = LineManager.Instance;
+            //        break;
+            //}
         }
 
         // place spatial point
