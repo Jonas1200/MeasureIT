@@ -32,8 +32,8 @@ namespace HoloToolkit.Examples.GazeRuler
             //switch (Mode)
             //{
             //    case GeometryMode.Polygon:
-                    Mode = GeometryMode.Rectangle;
-                    manager = PolygonManager.Instance;
+                    //Mode = GeometryMode.Rectangle;
+                    manager = RectangleManager.Instance;
             //        break;
             //    default:
             //        manager = LineManager.Instance;
@@ -72,7 +72,9 @@ namespace HoloToolkit.Examples.GazeRuler
             try
             {
                 manager.Reset();
-                if (Mode == GeometryMode.Line)
+                Mode = GeometryMode.Rectangle;
+                manager = RectangleManager.Instance;
+                /*if (Mode == GeometryMode.Line)
                 {
                     Mode = GeometryMode.Polygon;
                     manager = PolygonManager.Instance;
@@ -81,7 +83,7 @@ namespace HoloToolkit.Examples.GazeRuler
                 {
                     Mode = GeometryMode.Line;
                     manager = LineManager.Instance;
-                }
+                }*/
             }
             catch (Exception ex)
             {

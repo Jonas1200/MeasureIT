@@ -13,6 +13,8 @@ namespace HoloToolkit.Examples.GazeRuler
     {
         private const string LineMode = "Line Mode";
         private const string PolygonMode = "Geometry Mode";
+        private const string RectangleMode = "Rectangle Mode";
+
         private TextMesh text;
         private int fadeTime = 100;
         private Material material;
@@ -21,15 +23,20 @@ namespace HoloToolkit.Examples.GazeRuler
         {
             text = GetComponent<TextMesh>();
             material = GetComponent<Renderer>().material;
-            switch (MeasureManager.Instance.Mode)
+            MeasureManager.Instance.Mode = GeometryMode.Rectangle;
+            text.text = RectangleMode;
+            /*switch (MeasureManager.Instance.Mode)
             {
                 case GeometryMode.Line:
                     text.text = LineMode;
                     break;
+                case GeometryMode.Rectangle:
+                    text.text = RectangleMode;
+                    break;
                 default:
                     text.text = PolygonMode;
                     break;
-            }
+            }*/
         }
 
         protected override void OnDestroy()
@@ -44,6 +51,7 @@ namespace HoloToolkit.Examples.GazeRuler
             {
                 // if you want log the position of mode tip text, just uncomment it.
                 // Debug.Log("pos: " + gameObject.transform.position);
+                text.text = RectangleMode;/*
                 switch (MeasureManager.Instance.Mode)
                 {
                     case GeometryMode.Line:
@@ -59,7 +67,7 @@ namespace HoloToolkit.Examples.GazeRuler
                         }
                         break;
                 }
-
+                */
                 fadeTime = 100;
                 // fade tip text
                 if (fadeTime == 0)

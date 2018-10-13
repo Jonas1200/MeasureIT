@@ -5,13 +5,16 @@ using UnityEngine;
 using HoloToolkit.Unity;
 using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
+using System.IO;
+using System.Net;
+
 
 namespace HoloToolkit.Examples.GazeRuler
 {
     /// <summary>
     /// manager all rectangles in the scene
     /// </summary>
-    public class RectangleManager : Singleton<PolygonManager>, IGeometry, IRectangleClosable
+    public class RectangleManager : Singleton<RectangleManager>, IGeometry, IRectangleClosable
     {
         // save all geometries
         public Stack<Rectangle> Rectangles = new Stack<Rectangle>();
@@ -71,7 +74,9 @@ namespace HoloToolkit.Examples.GazeRuler
                     line.transform.Rotate(Vector3.down, 90f);
                     line.transform.parent = CurrentRectangle.Root.transform;
                     CurrentRectangle.length = distance;
-                    
+                    Debug.Log(CurrentRectangle.length);
+                    Debug.Log(CurrentRectangle.width);
+                    UploadMeasurement(CurrentRectangle.length, CurrentRectangle.width, 0);
                     CurrentRectangle.IsFinished = true;
                 }
 
@@ -89,8 +94,8 @@ namespace HoloToolkit.Examples.GazeRuler
             if (CurrentRectangle != null)
             {
                 CurrentRectangle.IsFinished = true;
-                var width = CalculateRectangleWidth(CurrentRectangle);
-                var length = CalculateRectangleLenght(CurrentRectangle);
+                //var width = CalculateRectangleWidth(CurrentRectangle);
+                var area = CalculateTriangleArea(CurrentRectangle.Points[1], CurrentRectangle.Points[1], CurrentRectangle.Points[1]);
                 var index = CurrentRectangle.Points.Count - 1;
                 var centerPos = (CurrentRectangle.Points[index] + CurrentRectangle.Points[0]) * 0.5f;
                 var direction = CurrentRectangle.Points[index] - CurrentRectangle.Points[0];
@@ -132,6 +137,39 @@ namespace HoloToolkit.Examples.GazeRuler
             }
         }
 
+        //send Data to NAV
+        public void UploadMeasurement(double Length, double Width, double Height)
+        {
+            Debug.Log("upload Data");
+            const string URL = "http://measureit.westeurope.cloudapp.azure.com:7048/NAV/ODataV4/Company%28%27CRONUS%20International%20Ltd.%27%29/Measurement";
+            const string CONTENT_TYPE = "application/json";
+            const string USER = "MeasureIT";
+            const string PW = "MeasureIT123";
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(URL);
+            httpWebRequest.ContentType = CONTENT_TYPE;
+            httpWebRequest.Method = "POST";
+            httpWebRequest.Credentials = new NetworkCredential(USER, PW);
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                string json = "{\"Length\": " + Length.ToString() + ","
+                    + "\"Width\": " + Width.ToString() + ","
+                    + "\"Height\": " + Height.ToString()
+                    + "}";
+
+                streamWriter.Write(json);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+            }
+        }
+
         // delete latest geometry
         public void Delete()
         {
@@ -166,8 +204,6 @@ namespace HoloToolkit.Examples.GazeRuler
         /// <returns></returns>
         private float CalculateRectangleArea(Rectangle rectangle)
         {
-            var a = 
-
             var s = 0.0f;
             var i = 1;
             var n = rectangle.Points.Count;
