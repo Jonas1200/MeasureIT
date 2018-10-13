@@ -1,0 +1,16 @@
+MixedRealityToolkit-Unity/External/
+MixedRealityToolkit-Unity/Library
+MixedRealityToolkit-Unity/obj
+MixedRealityToolkit-Unity/Packages
+MixedRealityToolkit-Unity/ProjectSettings
+MixedRealityToolkit-Unity/Temp
+MixedRealityToolkit-Unity/UnityPackageManager
+MixedRealityToolkit-Unity/UWP
+MixedRealityToolkit-Unity/*.*
+MixedRealityToolkit-Unity/.vs
+MixedRealityToolkit-Unity/Assets/FpsGraphAnalyzer
+MixedRealityToolkit-Unity/Assets/*.*
+MixedRealityToolkit-Unity/Assets/HoloToolkit
+MixedRealityToolkit-Unity/Assets/HoloToolkit-UnitTests
+MixedRealityToolkit-Unity/Assets/Scripts
+!/README.md
