@@ -132,7 +132,13 @@ namespace HoloToolkit.Examples.GazeRuler
             {
                 CurrentRectangle.IsFinished = true;
 
-                Vector3 modPos = new Vector3 { x = CurrentRectangle.Points[0].x, y = CurrentRectangle.Points[0].y, z = CurrentRectangle.Points[2].z };
+                var A = CurrentRectangle.Points[0];
+                var B = CurrentRectangle.Points[1];
+                var C = CurrentRectangle.Points[2];
+
+                var BA = A - B;
+
+                Vector3 modPos = C + BA;
 
                 var point = (GameObject)Instantiate(PointPrefab, modPos, Quaternion.identity);
                 var newPoint = new Point
