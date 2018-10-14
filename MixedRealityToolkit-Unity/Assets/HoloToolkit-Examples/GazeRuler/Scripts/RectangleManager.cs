@@ -80,14 +80,19 @@ namespace HoloToolkit.Examples.GazeRuler
                 {
                     Vector3 test = new Vector3 { x = hitPoint.x, y = CurrentRectangle.Points[0].y, z = hitPoint.z };
 
-                    var BA = CurrentRectangle.Points[1] - CurrentRectangle.Points[0];
+                    var BA = CurrentRectangle.Points[0] - CurrentRectangle.Points[1];
                     var BC = test - CurrentRectangle.Points[1];
 
                     var beta = System.Math.Round(Vector3.Angle(BA, BC));
+                    bool clockwise = true;
 
-                    while (!(beta == 90.0f || beta == 270.0f))
+                    while (!(beta == 90.0f))
                     {
-                        if ((beta >= 0 && beta < 90)||(beta > 180 && beta < 270))
+                        if ((beta >= 0 && beta < 90) && clockwise)
+                            test = test.RotateAround(CurrentRectangle.Points[1], Vector3.up);
+                        if ((beta >= 0 && beta < 90) && !clockwise)
+                            test = test.RotateAround(CurrentRectangle.Points[1], Vector3.up * -1);
+                        if (!(beta >= 0 && beta < 90) && clockwise)
                             test = test.RotateAround(CurrentRectangle.Points[1], Vector3.up * -1);
                         else
                             test = test.RotateAround(CurrentRectangle.Points[1], Vector3.up);
