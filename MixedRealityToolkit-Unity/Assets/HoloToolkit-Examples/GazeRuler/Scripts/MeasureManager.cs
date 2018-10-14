@@ -33,7 +33,7 @@ namespace HoloToolkit.Examples.GazeRuler
             //{
             //    case GeometryMode.Polygon:
                     Mode = GeometryMode.Rectangle;
-                    manager = PolygonManager.Instance;
+                    manager = RectangleManager.Instance;
             //        break;
             //    default:
             //        manager = LineManager.Instance;
@@ -66,6 +66,13 @@ namespace HoloToolkit.Examples.GazeRuler
             client.ClosePolygon(LinePrefab, TextPrefab);
         }
 
+        // if current mode is geometry mode, try to finish geometry
+        public void OnRectangleClose()
+        {
+            IRectangleClosable client = RectangleManager.Instance;
+            client.CloseRectangle(LinePrefab, PointPrefab, TextPrefab);
+        }
+
         // change measure mode
         public void OnModeChange()
         {
@@ -92,7 +99,23 @@ namespace HoloToolkit.Examples.GazeRuler
 
         public void OnHoldStarted(HoldEventData eventData)
         {
-            OnPolygonClose();
+            switch (Mode)
+            {
+                case GeometryMode.Line:
+                    break;
+                case GeometryMode.Triangle:
+                    break;
+                case GeometryMode.Rectangle:
+                    OnRectangleClose();
+                    break;
+                case GeometryMode.Cube:
+                    break;
+                case GeometryMode.Polygon:
+                    OnPolygonClose();
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void OnHoldCompleted(HoldEventData eventData)

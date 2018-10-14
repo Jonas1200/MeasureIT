@@ -10,7 +10,7 @@ namespace HoloToolkit.Examples.GazeRuler
     /// </summary>
     public interface IRectangleClosable
     {
-        //finish special polygon
-        void CloseRectangle(GameObject LinePrefab, GameObject TextPrefab);
+        //finish special rectangle
+        void CloseRectangle(GameObject LinePrefab, GameObject PointPrefab, GameObject TextPrefab);
     }
 }
